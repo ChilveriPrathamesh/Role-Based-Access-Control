@@ -28,30 +28,7 @@ class JobList extends Component {
         }
     }
 
-    applyForJob = async (jobId) => {
-        const candidateId = 2; // Replace with the logged-in candidate's ID dynamically
-
-        try {
-            const res = await fetch(`${API_URL_APPLICATIONS}/${jobId}/apply`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ candidate_id: candidateId })
-            });
-
-            const data = await res.json();
-            if (res.ok) {
-                alert("Applied successfully!");
-                this.setState(prevState => ({
-                    appliedJobs: [...prevState.appliedJobs, jobId]
-                }));
-            } else {
-                alert(data.error || "Failed to apply for the job.");
-            }
-        } catch (err) {
-            console.error(err);
-            alert("Something went wrong while applying for the job.");
-        }
-    }
+    
 
     render() {
         const { jobs, appliedJobs } = this.state
@@ -68,18 +45,6 @@ class JobList extends Component {
                                 <Link to={`/jobs/${job.id}`} className="joblist-details-link">
                                     View Details
                                 </Link>
-
-                                {/* Apply Button */}
-                                {appliedJobs.includes(job.id) ? (
-                                    <p style={{ color: "green", marginTop: "8px" }}>Already Applied</p>
-                                ) : (
-                                    <button
-                                        className="apply-btn"
-                                        onClick={() => this.applyForJob(job.id)}
-                                    >
-                                        Apply
-                                    </button>
-                                )}
                             </li>
                         ))}
                     </ul>
