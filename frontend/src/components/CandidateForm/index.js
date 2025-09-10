@@ -2,6 +2,7 @@ import React , {Component} from "react";
 
 import './index.css';
 import { API_URL } from "../../config";
+import Navbar from "../Navbar";
 
 class CandidateForm extends Component{
 
@@ -45,8 +46,11 @@ class CandidateForm extends Component{
     }
 
     render(){
+
         const {id , name , email , phone_number , current_status , resume_link} = this.state
-        return(      
+        return(    
+            <> 
+            <Navbar/> 
            <div className="candidate-form-container">
             <h1 className="candidate-form-title">{id ? "Edit Candidate" : "Add Candidate"}</h1>
             <form className="candidate-form" onSubmit={this.handleSubmit}>
@@ -107,6 +111,7 @@ class CandidateForm extends Component{
                 <button type="submit" className="candidate-form-button">{id ? "Update Candidate" : "Add Candidate"}</button>
             </form>
            </div>
+           </>
         )
     }
 }

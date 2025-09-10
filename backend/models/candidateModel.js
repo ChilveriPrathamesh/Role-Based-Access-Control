@@ -61,9 +61,24 @@ const deleteCandidate = async (id) => {
   }
 };
 
+//Check if a candidate exists by ID 
+const candidateExists = async(candidateId) => {
+    try {
+        const [rows] = await pool.query(
+            `SELECT id, name, email FROM candidates WHERE id = ?`,
+            [candidateId]
+            );
+
+        return rows ;
+    } catch(error) {
+        throw new Error('Error to get the candidate details : ' + error.message) 
+    }
+}
+
 module.exports =  {
     getAllCandidates ,
     addCandidate ,
     updateCandidate ,
-    deleteCandidate
+    deleteCandidate ,
+    candidateExists
 } ;

@@ -43,9 +43,28 @@ const removeCandidate = async (req, res) => {
     }
 }
 
+//GET /candidates/:id/exists 
+
+const checkCandidateExists = async(req,res) => {
+    try {
+        const {id} =req.params ;
+        const [rows] = await Candidate.candidateExists(id) ;
+
+        if(rows.length === 0) {
+            return res.status(404).json({exists : false , message : 'Candidate not found'}) ;
+        }
+
+        res.status(200).json({exists : true , candidate : rows[0]})
+    } catch(error) {
+        console.error('Error in chechCandidateExists : ' , error) ;
+        res.status(500).json({error : 'Server Error'}) 
+    }
+}
+
 module.exports = {
     getCandidates ,
     createCandidate , 
     editCandidate , 
-    removeCandidate
+    removeCandidate ,
+    checkCandidateExists
 }

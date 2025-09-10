@@ -1,0 +1,111 @@
+.job-list-container{
+    padding: 20px;
+    max-width: 900px;
+    margin: 0 auto;
+    font-family: "Segoe UI";
+}
+
+.job-list-title{
+    font-size: 28px;
+    font-weight: 600;
+    color: #222;
+    margin-bottom: 25px;
+    text-align: center;
+    letter-spacing: 0.5px;
+}
+
+.joblist-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.joblist-item {
+    background-color: #ffffff;
+    margin-bottom: 20px;
+    padding: 20px 24px;
+    border-radius: 12px;
+    box-shadow: 0px 4px 12px rgba(0,0,0,0.8);
+    transition: transform 0.2s ease ;
+}
+
+.joblist-item :hover{
+    transform: translateY(-4px);
+    box-shadow: 0px 6px 16px rgba(0,0,0,0.12);
+}
+
+.joblist-job-title{
+    margin: 0 0 10px;
+    font-size: 20px;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.joblist-job-description{
+    margin: 0 0 15px;
+    color: #555;
+    font-size: 14px;
+    line-height: 1.5px;
+}
+
+ 
+.joblist-details-link{
+    display: inline-block;
+    padding: 8px 16px;
+    background: linear-gradient(135deg,#007bff , #0056b3);
+    color: #ffffff;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: background 0.2s ease , transform 0.2s ease;
+}
+
+.joblist-details-link:hover {
+  background: linear-gradient(135deg, #0056b3, #004099);
+  transform: translateY(-2px);
+}
+
+/* Dropdown styling */
+select {
+    padding: 8px 12px;
+    font-size: 14px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    background-color: #f0f4f8;
+    color: #2c3e50;
+    outline: none;
+    margin-right: 10px;
+    transition: border 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Hover and focus effect */
+select:hover,
+select:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.4);
+}
+
+/* Option text color */
+select option {
+    color: #2c3e50;
+    background-color: #ffffff;
+}
+
+/* Button next to select (Apply) */
+.apply-btn {
+    padding: 8px 16px;
+    background-color: #28a745;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.apply-btn:hover {
+    background-color: #218838;
+    transform: translateY(-1px);
+}

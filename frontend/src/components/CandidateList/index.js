@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { API_URL } from "../../config";
 
 import './index.css';
+import Navbar from "../Navbar";
 
 class CandidateList extends Component{
 
@@ -43,11 +44,13 @@ class CandidateList extends Component{
     render(){
         const {candidates} = this.state
         return(
+            <>
+            <Navbar/>
             <div className="candidate-list-container">
                 <div className="candidate-list-header">
                     <h1 className="candidate-title">Candidate List</h1>
                     <Link to = "/add">
-                        <button className="candidate-list-add-btn">Add Candidate</button>
+                        <button className="candidate-list-add-btn">Edit Candidate</button>
                     </Link>
                 </div>
 
@@ -66,6 +69,7 @@ class CandidateList extends Component{
                     <tbody>
                         {candidates.map((candidate)=>(
                             <tr key={candidate.id} >
+                                <td>{candidate.id}</td>
                                 <td>{candidate.name}</td>
                                 <td>{candidate.email}</td>
                                 <td>{candidate.phone_number}</td>
@@ -93,6 +97,7 @@ class CandidateList extends Component{
                     </tbody>
                 </table>
             </div>
+            </>
         )
     }
 }

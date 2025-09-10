@@ -1,250 +1,211 @@
-Candidate Management System
+# Project 2: Job Posting and Application Portal
 
-A full-stack application to manage candidates with functionalities to add, edit, view, and delete candidates. It includes a React frontend and a Node.js/Express backend connected to a MySQL database, along with Swagger API documentation.
+This project expands on the Candidate Management System by introducing
+jobs and applications, allowing recruiters to post jobs and candidates
+to apply. The system now handles a **many-to-many relationship**: a
+candidate can apply to multiple jobs, and a job can have multiple
+applicants.
 
-Table of Contents
+------------------------------------------------------------------------
 
-Features
+## Features
 
-Technologies Used
+-   Candidate management (add, edit, view, delete).
+-   Job management (add, edit, view, delete).
+-   Apply functionality to link candidates with jobs.
+-   View all candidates who applied for a specific job.
+-   RESTful API endpoints for Candidates, Jobs, and Applications.
+-   Swagger API documentation.
+-   React frontend integrated with backend APIs.
+-   Unit tests for both frontend components and backend endpoints.
 
-Project Structure
+------------------------------------------------------------------------
 
-Backend Setup
+## Technologies Used
 
-Environment Variables
+**Frontend:** - React.js\
+- React Router\
+- CSS / Bootstrap
 
-Install Dependencies
+**Backend:** - Node.js\
+- Express.js\
+- MySQL\
+- Swagger (OpenAPI 3.0)
 
-Run Server
+**Testing:** - Jest\
+- React Testing Library\
+- Supertest (for backend testing)
 
-API Documentation
+------------------------------------------------------------------------
 
-Frontend Setup
+## Database Schema
 
-Install Dependencies
+-   **candidates** table: Stores candidate details.\
+-   **jobs** table: Stores job details (id, title, description,
+    required_skills, recruiter_id).\
+-   **applications** table: Many-to-many mapping with candidate_id and
+    job_id.
 
-Run Frontend
+------------------------------------------------------------------------
 
-Unit Testing
+## Project Structure
 
-Folder Structure
+    job-posting-and-application-portal/
+    │
+    ├── backend/
+    │   ├── controllers/
+    │   │   ├── candidateController.js
+    │   │   ├── jobController.js
+    │   │   └── applicationController.js
+    │   ├── models/
+    │   │   ├── candidateModel.js
+    │   │   ├── jobModel.js
+    │   │   └── applicationModel.js
+    │   ├── routes/
+    │   │   ├── candidateRoutes.js
+    │   │   ├── jobRoutes.js
+    │   │   └── applicationRoutes.js
+    │   ├── config/
+    │   │   └── db.js
+    │   ├── swagger.js
+    │   ├── server.js
+    │   └── package.json
+    │
+    ├── frontend/
+    │   ├── src/
+    │   │   ├── components/
+    │   │   │   ├── CandidateForm.js
+    │   │   │   ├── CandidateList.js
+    │   │   │   ├── JobList.js
+    │   │   │   └── JobDetails.js
+    │   │   ├── App.js
+    │   │   └── index.js
+    │   ├── package.json
+    │   └── public/
+    │
+    └── README.md
 
-Future Improvements
+------------------------------------------------------------------------
 
-Features
+## Backend Setup
 
-View all candidates in a table.
+### Environment Variables
 
-Add new candidates with details: name, email, phone number, status, and resume link.
+Create a `.env` file in the backend folder:
 
-Edit existing candidate details.
+    DB_HOST=localhost
+    DB_USER=root
+    DB_PASSWORD=your_password
+    DB_NAME=job_portal_db
+    PORT=5000
 
-Delete candidates.
+Replace `your_password` with your MySQL password.
 
-RESTful API endpoints.
+------------------------------------------------------------------------
 
-Swagger API documentation.
+### Install Dependencies
 
-Unit tests for frontend components and backend endpoints.
-
-Technologies Used
-
-Frontend:
-
-React.js
-
-React Router
-
-CSS / Bootstrap
-
-Backend:
-
-Node.js
-
-Express.js
-
-MySQL
-
-Swagger (OpenAPI 3.0)
-
-Testing:
-
-Jest
-
-React Testing Library
-
-Supertest (for backend testing)
-
-Project Structure
-candidate-management-system/
-│
-├── backend/
-│   ├── controllers/
-│   │   └── candidateController.js
-│   ├── models/
-│   │   └── candidateModel.js
-│   ├── routes/
-│   │   └── candidateRoutes.js
-│   ├── config/
-│   │   └── db.js
-│   ├── swagger.js
-│   ├── server.js
-│   └── package.json
-│
-├── frontend/
-│   ├── src/
-│   │   ├── components/
-│   │   │   ├── CandidateForm.js
-│   │   │   └── CandidateList.js
-│   │   ├── App.js
-│   │   └── index.js
-│   ├── package.json
-│   └── public/
-│
-└── README.md
-
-Backend Setup
-Environment Variables
-
-Create a .env file in the backend folder:
-
-DB_HOST=localhost
-DB_USER=root
-DB_PASSWORD=your_password
-DB_NAME=candidate_db
-PORT=5000
-
-
-Replace your_password with your MySQL password.
-
-Install Dependencies
-cd backend
-npm install
-
+    cd backend
+    npm install
 
 Dependencies include:
 
-express
+-   express\
+-   mysql2\
+-   body-parser\
+-   cors\
+-   dotenv\
+-   swagger-jsdoc\
+-   swagger-ui-express\
+-   nodemon (for development)
 
-mysql2
+------------------------------------------------------------------------
 
-body-parser
+### Run Server
 
-cors
+    npm start
 
-dotenv
+Server runs on `http://localhost:5000`.\
+Swagger docs available at `http://localhost:5000/api-docs`.
 
-swagger-jsdoc
+------------------------------------------------------------------------
 
-swagger-ui-express
-
-nodemon (for development)
-
-Run Server
-npm start
-
-
-Server runs on http://localhost:5000.
-
-Default API route: http://localhost:5000/
-
-Swagger docs: http://localhost:5000/api-docs
-
-API Documentation (Swagger)
-
-Swagger UI automatically generates documentation for your endpoints.
+## API Documentation (Swagger)
 
 Example endpoints:
 
-GET /api/candidates → Get all candidates
+-   `GET /api/candidates` → Get all candidates\
 
-POST /api/candidates → Add a new candidate
+-   `POST /api/candidates` → Add a new candidate\
 
-PUT /api/candidates/:id → Update candidate by ID
+-   `PUT /api/candidates/:id` → Update candidate by ID\
 
-DELETE /api/candidates/:id → Delete candidate by ID
+-   `DELETE /api/candidates/:id` → Delete candidate by ID
 
-Frontend Setup
-Install Frontend Dependencies
-cd frontend
-npm install
+-   `GET /api/jobs` → Get all jobs\
 
-Run Frontend
-npm start
+-   `POST /api/jobs` → Add a new job\
 
+-   `PUT /api/jobs/:id` → Update job by ID\
 
-Frontend runs on http://localhost:3000.
+-   `DELETE /api/jobs/:id` → Delete job by ID
 
-Navigation:
+-   `POST /api/applications/{jobId}/apply` → Candidate applies for a job\
 
-/ → Candidate List
+-   `GET /api/applications/{jobId}/candidates` → Get all candidates who applied
+    for a job
 
-/add → Add Candidate Form
+------------------------------------------------------------------------
 
-/edit/:id → Edit Candidate Form
+## Frontend Setup
 
-Frontend connects to backend API running on http://localhost:5000/api/candidates.
+### Install Dependencies
 
-Unit Testing
-Frontend
+    cd frontend
+    npm install
 
-Uses Jest and React Testing Library.
+### Run Frontend
 
-Tests individual components and form functionality.
+    npm start
 
-Example: CandidateForm.test.js
+Frontend runs on `http://localhost:3000`.
 
-Check input fields render correctly.
+Navigation:\
+- `/` → Candidate List\
+- `/add` → Add Candidate Form\
+- `/edit/:id` → Edit Candidate Form\
+- `/jobs` → Job List\
+- `/jobs/:id` → Job Details with applicant list and Apply button
 
-Test state changes when input changes.
+------------------------------------------------------------------------
 
-Mock API call to verify POST request.
+## Unit Testing
+
+### Frontend
+
+Uses **Jest** and **React Testing Library**.
+
+-   Tests components like CandidateForm, CandidateList, JobList, and
+    JobDetails.\
+-   Mocks API calls to verify data rendering and submission.
 
 Run frontend tests:
 
-npm test
+    npm test
 
-Backend (Optional)
+### Backend
 
-Use Jest + Supertest.
+Uses **Jest + Supertest**.
 
-Test API endpoints for expected behavior.
+-   Tests endpoints for Candidates, Jobs, and Applications.\
+-   Example: Apply endpoint should insert a row into the `applications`
+    table.
 
-Example: POST request adds a candidate, GET request retrieves candidates.
+------------------------------------------------------------------------
 
-Folder Structure Explanation
+## Future Improvements
 
-Backend:
-
-server.js → Main server entry point.
-
-controllers/ → Handle API logic.
-
-models/ → Database queries.
-
-routes/ → Route definitions.
-
-swagger.js → API documentation setup.
-
-config/db.js → MySQL database connection.
-
-Frontend:
-
-components/ → React components for UI.
-
-App.js → Routes setup.
-
-index.js → Main render file.
-
-Future Improvements
-
-Add authentication for admin and users.
-
-Integrate Redux for state management.
-
-Add pagination and search for candidate list.
-
-Add file upload for resumes instead of URLs.
-
-Add backend validation for form inputs.
+-   Add authentication for recruiters and candidates.\
+-   Pagination and search for jobs and candidates.\
+-   File upload for resumes instead of URLs.\
+-   Notification system for job applications.

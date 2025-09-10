@@ -3,6 +3,8 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const candidateRoutes = require('./routes/candidateRoutes');
+const jobRoutes = require('./routes/jobRoutes.js');
+const applicationRoutes = require('./routes/applicationRoutes.js')
 const{swaggerUi , swaggerSpec, swaggerDocs} = require('./swagger');
 
 dotenv.config();
@@ -16,11 +18,13 @@ app.use(bodyParser.json());
 swaggerDocs(app , process.env.PORT || 5000) ;
 
 //Routes
-app.use('/api/candidates' , candidateRoutes)
+app.use('/api/candidates' , candidateRoutes);
+app.use('/api/jobs' ,jobRoutes )
+app.use('/api/applications' , applicationRoutes)
 
 //Default route
 app.get('/' , (req,res)=> {
-    res.send('Candidate Management System API is running')
+    res.send('Job Posting and Application Portal API is running')
 })
 const PORT =  process.env.PORT || 5000;
 

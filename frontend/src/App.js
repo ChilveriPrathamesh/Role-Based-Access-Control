@@ -4,20 +4,21 @@ import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import "./App.css";
 import CandidateForm from "./components/CandidateForm";
 import CandidateList from "./components/CandidateList";
+import Home from "./components/Home";
+import JobList from "./components/JobList";
+import JobDetails from "./components/JobDetails";
 
 function App() {
   return (
     <Router>
       <div className="app-container">
-        <div className="navbar">
-          <Link to="/">Home</Link>
-          <Link to="/add">Add Candidate</Link>
-        </div>
-        <h1 className="app-title">Candidate Management System</h1>
         <Routes>
-          <Route path="/" element={<CandidateList />} />
-          <Route path="/add" element={<CandidateForm />} />
+          <Route exact path = "/" element ={<Home/>} />
+          <Route path="/candidatelist" element={<CandidateList />} />
+          <Route path="/add-candidate" element={<CandidateForm />} />
           <Route path="/edit/:id" element={<CandidateForm />} />
+          <Route path = "/job-list" element = {<JobList/>} />
+          <Route path="/jobs/:id" element={<JobDetails/>} />
         </Routes>
       </div>
     </Router>
