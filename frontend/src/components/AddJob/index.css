@@ -1,0 +1,50 @@
+.add-job-container{
+    max-width: 600px;
+    margin: 30px auto;
+    padding: 20px;
+    background: #fff;
+    border: 12px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.add-job-title{
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.form-container{
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.form-label{
+    display: block;
+    margin-bottom: 2px;
+    font-weight: bold;
+    color: #555;
+}
+
+.form-input{
+    border-radius: 6px;
+    padding: 8px 12px;
+    width: 100%;
+    border: 1px solid #ccc;
+    margin-top: 5px;
+    margin-right: 5px;
+}
+
+.job-btn{
+  width: 40%;
+  padding: 12px;
+  margin-left: 180px;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #fff;
+  background-color: #4CAF50; /* Green color */
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease
+}

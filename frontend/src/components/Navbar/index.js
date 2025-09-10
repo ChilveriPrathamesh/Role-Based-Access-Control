@@ -14,6 +14,7 @@ class Navbar extends Component{
                     <Link to = "/candidatelist">Candidate List</Link>
                     <Link to = "/add-candidate">Add Candidate</Link>
                     <Link to ="/job-list" >Job List</Link>
+                    <Link to="/add-job">Add Job</Link>
                 </div>
                 </nav>
                 </div>

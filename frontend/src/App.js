@@ -7,6 +7,7 @@ import CandidateList from "./components/CandidateList";
 import Home from "./components/Home";
 import JobList from "./components/JobList";
 import JobDetails from "./components/JobDetails";
+import AddJob from "./components/AddJob";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path="/edit/:id" element={<CandidateForm />} />
           <Route path = "/job-list" element = {<JobList/>} />
           <Route path="/jobs/:id" element={<JobDetails/>} />
+          <Route path = "/add-job"element={<AddJob/>}/>
         </Routes>
       </div>
     </Router>
