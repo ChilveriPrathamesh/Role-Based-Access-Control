@@ -5,6 +5,7 @@ const dotenv = require('dotenv');
 const candidateRoutes = require('./routes/candidateRoutes');
 const jobRoutes = require('./routes/jobRoutes.js');
 const applicationRoutes = require('./routes/applicationRoutes.js')
+const authRoutes = require('./routes/authRoutes.js')
 const{swaggerUi , swaggerSpec, swaggerDocs} = require('./swagger');
 
 dotenv.config();
@@ -21,6 +22,7 @@ swaggerDocs(app , process.env.PORT || 5000) ;
 app.use('/api/candidates' , candidateRoutes);
 app.use('/api/jobs' ,jobRoutes )
 app.use('/api/applications' , applicationRoutes)
+app.use('/api',authRoutes)
 
 //Default route
 app.get('/' , (req,res)=> {

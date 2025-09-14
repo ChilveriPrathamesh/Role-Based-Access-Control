@@ -2,6 +2,7 @@ import { Component } from "react";
 import Navbar from '../Navbar'
 import {API_URL_JOBS , API_URL_APPLICATIONS} from '../../config'
 import withRouter from "../withRouter";
+import Cookies from 'js-cookie'
 import './index.css'
 class JobDetails extends Component{
   state = {
@@ -12,7 +13,13 @@ class JobDetails extends Component{
 
   fetchJobDetails = async (id) => {
     try {
-      const res = await fetch(`${API_URL_JOBS}/${id}`) ;
+      const token = Cookies.get("token")
+      const res = await fetch(`${API_URL_JOBS}/${id}`,{
+        headers : {
+          "Authorization" : `Bearer ${token}`,
+          "Content-Type" : "application/json"
+        }
+      }) ;
       if(!res.ok) throw new Error('Failed to fetch Job Details') ;
       const data = await res.json();
       this.setState({job : data});
@@ -22,7 +29,13 @@ class JobDetails extends Component{
   }
   fetchCandidates = async (id) => {
     try{
-      const res = await fetch(`${API_URL_APPLICATIONS}/job/${id}`);
+      const token = Cookies.get("token")
+      const res = await fetch(`${API_URL_APPLICATIONS}/job/${id}`,{
+        headers : {
+          "Authorization" : `Bearer ${token}` ,
+          "Content-Type" : "application/json"
+        }
+      });
 
       if(!res.ok) {
         console.error("Failed to fetch the candidates")

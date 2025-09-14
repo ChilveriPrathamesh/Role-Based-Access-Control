@@ -37,20 +37,26 @@ const getJobById = async (id) => {
 }
 
 // POST API to create or add a new job to the jobs table 
-const addJob = async(job) => {
+const addJob = async ({ title, description, required_skills, recruiter_id }) => {
     try {
-        const { title, description, required_skills, recruiter_id } = job;
         const [result] = await pool.query(
-            `INSERT INTO 
-             jobs (title, description, required_skills, recruiter_id)
-             VALUES (?,?,?,?)`
-            , [title, description, required_skills, recruiter_id]
+            `INSERT INTO jobs (title, description, required_skills, recruiter_id)
+             VALUES (?, ?, ?, ?)`,
+            [title, description, required_skills, recruiter_id]
         );
-        return { id: result.insertId, ...job };
-    } catch (error) {
-        throw new Error('Error adding job to jobs table: ' + error.message);
+
+        return {
+            id: result.insertId,
+            title,
+            description,
+            required_skills,
+            recruiter_id
+        };
+    } catch (err) {
+        console.error("Error in addJob model:", err);
+        throw err;
     }
-}
+};
 
 //PUT API to update an existing job in a jobs table 
 const updateJob = async (id, job) => {
@@ -102,11 +108,47 @@ const jobExists = async(jobId) => {
     }
 } 
 
+// Get job by recruiter ID 
+
+const getJobByRecruiterId = async (recruiterId) => {
+    try {
+        const [rows] = await pool.query(
+            `SELECT * 
+             FROM jobs 
+             WHERE recruiter_id = ? 
+             ORDER BY created_at DESC
+            `,[recruiterId] 
+            
+        ) 
+        return rows 
+    } catch(error) {
+        console.error('Error fetching jobs by recruiter :' , error.message);
+        throw new Error('error fetching recruiter jobs')
+    }
+}
+
+// Get jobs for hiring manager
+const getJobByHiringManagerId = async(hiringManagerId) => {
+    try {
+        const [rows] = await pool.query(`
+                SELECT j.*
+                FROM jobs j 
+                INNER JOIN job_assignments ja ON j.id = ja.job_id 
+                WHERE ja.hiring_manager_id = ?
+            `,[hiringManagerId])
+            return rows
+    } catch(error){
+        console.error('Error fetching jobs by hiring manager : ' , error.message) ;
+        throw new Error('Error fetching jobs by hiring manager')
+    }
+}
 module.exports = {
     getAllJobs ,
     getJobById ,
     addJob , 
     updateJob , 
     deleteJob ,
-    jobExists
-}
+    jobExists ,
+    getJobByRecruiterId ,
+    getJobByHiringManagerId
+} 

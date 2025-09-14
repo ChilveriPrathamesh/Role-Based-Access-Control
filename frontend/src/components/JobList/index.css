@@ -109,3 +109,17 @@ select option {
     background-color: #218838;
     transform: translateY(-1px);
 }
+
+
+.joblist-delete-btn{
+    padding: 8px 16px;
+    margin-left: 5px;
+    background-color: #d60000;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
