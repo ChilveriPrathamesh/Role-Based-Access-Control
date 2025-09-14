@@ -1,4 +1,4 @@
-# Project 2: Job Posting and Application Portal
+# Project 3: Advanced Role-Based Access Control (RBAC)
 
 This project expands on the Candidate Management System by introducing
 jobs and applications, allowing recruiters to post jobs and candidates
@@ -209,3 +209,39 @@ Uses **Jest + Supertest**.
 -   Pagination and search for jobs and candidates.\
 -   File upload for resumes instead of URLs.\
 -   Notification system for job applications.
+
+
+## Detailed Breakdown
+
+### 1. Database Schema (New User Table):
+
+- Create a users table with columns: id, email, password_hash, and role.
+- Crucial: Never store passwords as plain text. Always use a secure hashing
+  algorithm like bcrypt.
+
+### 2. Back-end API (Security Layer):
+
+- **Login Endpoint**: Create a `POST /api/login` route. It will check the user's
+  credentials against the database. If correct, it will generate a JSON Web Token
+  (JWT), which is like a secure ID badge for your application. This token will
+  contain the user's id and role.
+- **Secure All Endpoints**: Implement a security check for every API endpoint.
+  Before any action, your back end must:
+  - Verify the JWT from the request header.
+  - Check the role inside the token.
+  - If the user's role does not have permission for the requested action (e.g.,
+    a "Recruiter" trying to DELETE a job), return a **403 Forbidden** error.
+
+### 3. Front-end (Dynamic UI):
+
+- **Login Page**: A simple form for a user to enter their email and password.
+- **Dynamic UI**: The front end needs to be "smart." Based on the user's role (which
+  you can get from the JWT), you will dynamically show or hide buttons and
+  pages. For example:
+  - If the user is an Admin, they see all the CRUD buttons.
+  - If the user is a Recruiter, the "Delete" buttons are not even rendered on
+    the page.
+  - If the user is a Hiring Manager, they only see candidates for jobs they
+    are assigned to.
+- **Log Out**: Create a button that removes the JWT from the front end, effectively
+  logging the user out.
