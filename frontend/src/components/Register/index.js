@@ -104,7 +104,6 @@ class Register extends Component {
                 className="form-input"
                 required
               >
-                <option value="Candidate">Candidate</option>
                 <option value="Recruiter">Recruiter</option>
                 <option value="Hiring Manager">Hiring Manager</option>
                 <option value="Admin">Admin</option>
