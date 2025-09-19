@@ -1,6 +1,6 @@
 const express = require('express');
 
-const {getCandidates , createCandidate , editCandidate , removeCandidate , getCandidate} = require('../controllers/candidateController');
+const {getCandidates , createCandidate , editCandidate , removeCandidate , getCandidate , assignCandidate} = require('../controllers/candidateController');
 
 const router = express.Router() ;
 
@@ -117,5 +117,39 @@ router.put('/:id' , editCandidate)
  */
 
 router.delete('/:id',removeCandidate)
+
+/**
+ * @swagger
+ * /api/candidates/{id}:
+ *   put:
+ *     summary: Assign candidate to HR
+ *     tags: [Candidates]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: Candidate ID
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               assigned_to:
+ *                 type: integer
+ *                 description: HR user ID
+ *     responses:
+ *       200:
+ *         description: Candidate assigned successfully
+ *       400:
+ *         description: HR id is required
+ *       404:
+ *         description: Candidate not found
+ */
+router.put('/:id/assign', assignCandidate);
+
 
 module.exports = router ;

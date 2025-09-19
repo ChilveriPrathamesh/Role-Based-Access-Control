@@ -1,112 +1,111 @@
-import React , { Component } from "react";
+import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { API_URL } from "../../config";
-import Cookies from 'js-cookie'
-
-import './index.css';
+import Cookies from "js-cookie";
 import Navbar from "../Navbar";
+import "./index.css";
 
-class CandidateList extends Component{
+class CandidateList extends Component {
+  state = { candidates: [] };
 
-    state = {
-        candidates : []
+  componentDidMount() {
+    this.fetchCandidates();
+  }
+
+  fetchCandidates = async () => {
+    try {
+      const userRole = Cookies.get("role");
+      const userId = Cookies.get("userId");
+
+      const res = await fetch(
+        `${API_URL}?role=${encodeURIComponent(userRole)}&userId=${userId}`
+      );
+      const data = await res.json();
+      this.setState({ candidates: Array.isArray(data) ? data : [] });
+    } catch (error) {
+      console.error("Error fetching candidates:", error);
     }
+  };
 
-    constructor(props){
-        super(props);
+  handleDelete = async (id) => {
+    try {
+      await fetch(`${API_URL}/${id}`, { method: "DELETE" });
+      this.fetchCandidates();
+    } catch (error) {
+      console.error("Error deleting candidate:", error);
     }
+  };
 
-    componentDidMount(){
-        this.fetchCandidates();
-    }
+  render() {
+    const { candidates } = this.state;
+    const userRole = Cookies.get("role");
 
-    fetchCandidates = async () => {
-        try {
-            const res = await fetch(API_URL) ;
-            const data = await res.json();
-            this.setState({candidates : data})
-        } catch(error) {
-            console.error('Error fetching candidates :' , error)
-        }
-    }
+    return (
+      <>
+        <Navbar />
+        <div className="candidate-list-container">
+          <div className="candidate-list-header">
+            <h1 className="candidate-title">Candidate List</h1>
 
-    //Delete candidate function pending
-    handleDelete = async(id) =>{
-        try {
-            await fetch(`${API_URL}/${id}` , {
-                method : 'DELETE' 
-            })
-            this.fetchCandidates();
-        } catch(error) {
-            console.error('Error deleting candidate : ' , error)
-        }
-    }
+            {/* Only Admin can add new candidate */}
+            {userRole === "Admin" && (
+              <Link to="/add-candidate">
+                <button className="candidate-list-add-btn">Add Candidate</button>
+              </Link>
+            )}
+          </div>
 
-    render(){
-        const {candidates} = this.state
-        const userRole = Cookies.get("role")
-        return(
-            <>
-            <Navbar/>
-            <div className="candidate-list-container">
-                <div className="candidate-list-header">
-                    <h1 className="candidate-title">Candidate List</h1>
-                    <Link to = "/add-candidate">
-                        <button className="candidate-list-add-btn">Edit Candidate</button>
-                    </Link>
-                </div>
+          <table className="candidate-list-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Status</th>
+                <th>Resume</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
 
-                <table className="candidate-list-table">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Phone </th>
-                            <th>Status</th>
-                            <th>Resume</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {candidates.map((candidate)=>(
-                            <tr key={candidate.id} >
-                                <td>{candidate.id}</td>
-                                <td>{candidate.name}</td>
-                                <td>{candidate.email}</td>
-                                <td>{candidate.phone_number}</td>
-                                <td>{candidate.current_status}</td>
-                                <td>
-                                    <a 
-                                     href={candidate.resume_link}
-                                     target="_blank"
-                                     rel="noopener noreferrer"
-                                     className="candidate-resume-link"
-                                     >
-                                        Resume View
-                                    </a>
-                                </td>
-                                <td>
-                                    <Link to={`/edit/${candidate.id}`}>
-                                        <button className="candidate-list-edit-btn">Edit</button>
-                                    </Link>
+            <tbody>
+              {candidates.map((candidate) => (
+                <tr key={candidate.id}>
+                  <td>{candidate.id}</td>
+                  <td>{candidate.name}</td>
+                  <td>{candidate.email}</td>
+                  <td>{candidate.phone_number}</td>
+                  <td>{candidate.current_status}</td>
+                  <td>
+                    <a
+                      href={candidate.resume_link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Resume View
+                    </a>
+                  </td>
+                  <td>
+                    {(userRole === "Admin" || userRole === "Recruiter") && (
+                      <Link to={`/edit/${candidate.id}`}>
+                        <button>Edit</button>
+                      </Link>
+                    )}
 
-                                    {
-                                        userRole === "Admin" && (
-                                            <button className="candidate-list-delete-btn" onClick={()=>this.handleDelete(candidate.id)}>
-                                                Delete
-                                            </button>
-                                        )
-                                    }
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
-            </>
-        )
-    }
+                    {userRole === "Admin" && (
+                      <button onClick={() => this.handleDelete(candidate.id)}>
+                        Delete
+                      </button>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </>
+    );
+  }
 }
 
-export default CandidateList
+export default CandidateList;

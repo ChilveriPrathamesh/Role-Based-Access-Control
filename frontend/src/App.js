@@ -1,9 +1,11 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import Cookies from "js-cookie";
 
 import "./App.css";
 import CandidateForm from "./components/CandidateForm";
 import CandidateList from "./components/CandidateList";
+import AssignCandidate from "./components/AssignCandidate";
 import Home from "./components/Home";
 import JobList from "./components/JobList";
 import JobDetails from "./components/JobDetails";
@@ -12,8 +14,6 @@ import Login from "./components/Login";
 import Logout from "./components/Logout";
 import Register from "./components/Register";
 import ProtectedRoute from "./components/ProtectedRoute";
-import Cookies from 'js-cookie'
-import { Navigate } from "react-router-dom";
 
 function App() {
   return (
@@ -21,13 +21,13 @@ function App() {
       <div className="app-container">
         <Routes>
           {/* Public Routes */}
-          <Route 
-            path="/login" 
-            element={!Cookies.get("token") ? <Login /> : <Navigate to="/" replace />} 
+          <Route
+            path="/login"
+            element={!Cookies.get("token") ? <Login /> : <Navigate to="/" replace />}
           />
-          <Route 
-            path="/register" 
-            element={!Cookies.get("token") ? <Register /> : <Navigate to="/" replace />} 
+          <Route
+            path="/register"
+            element={!Cookies.get("token") ? <Register /> : <Navigate to="/" replace />}
           />
 
           {/* Protected Routes */}
@@ -47,10 +47,12 @@ function App() {
               </ProtectedRoute>
             }
           />
+
+          {/* Candidate Routes */}
           <Route
             path="/candidatelist"
             element={
-              <ProtectedRoute allowedRoles={["Admin" , "Recruiter"]}>
+              <ProtectedRoute allowedRoles={["Admin", "Recruiter", "Hiring Manager"]}>
                 <CandidateList />
               </ProtectedRoute>
             }
@@ -72,6 +74,17 @@ function App() {
             }
           />
 
+          {/* Assign Candidate (Admin only) */}
+          <Route
+            path="/assign-candidate"
+            element={
+              <ProtectedRoute allowedRoles={["Admin"]}>
+                <AssignCandidate />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Job Routes */}
           <Route
             path="/job-list"
             element={

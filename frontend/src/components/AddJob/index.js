@@ -16,64 +16,69 @@ class AddJob extends Component {
 
   componentDidMount() {
     const userId = Cookies.get("userId");
-    // if user is recruiter and we have userId, auto fill recruiter_id
     if (this.state.role === "Recruiter" && userId) {
       this.setState({ recruiter_id: userId });
     }
   }
 
-  handleChange = (event) => {
-    this.setState({ [event.target.name]: event.target.value });
+  handleChange = (e) => {
+    this.setState({ [e.target.name]: e.target.value });
   };
 
   handleSubmit = async (e) => {
     e.preventDefault();
     const { title, description, required_skills, recruiter_id, role } = this.state;
 
-    // Only Recruiter or Admin allowed client-side (server must still enforce)
     if (!(role === "Recruiter" || role === "Admin")) {
       this.setState({ message: "Unauthorized: you don't have permission to add jobs." });
       return;
     }
 
     if (!title || !description || !required_skills || !recruiter_id) {
-      this.setState({ message: "Please fill all fields" });
+      this.setState({ message: "Please fill all fields." });
       return;
     }
+
     try {
+      // Get token from cookie
+      const token = (Cookies.get("token") || "").replace(/"/g, "").trim();
+      if (!token) {
+        this.setState({ message: "Token not found. Please login again." });
+        return;
+      }
+
       const res = await fetch(`${API_URL_JOBS}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          // optionally include token header
-          Authorization: `Bearer ${Cookies.get("token") || ""}`,
+          Authorization: `Bearer ${token}`, // attach JWT
         },
-        body: JSON.stringify({
-          title,
-          description,
-          required_skills,
-        }),
+        body: JSON.stringify({ title, description, required_skills, recruiter_id }),
       });
+
       if (res.ok) {
         this.setState({
-          message: "Job added successfully",
+          message: "Job added successfully!",
           title: "",
           description: "",
           required_skills: "",
           recruiter_id: role === "Recruiter" ? recruiter_id : "",
         });
+      } else if (res.status === 401) {
+        this.setState({ message: "Unauthorized: invalid or expired token. Please login again." });
       } else {
         const err = await res.json().catch(() => ({}));
-        this.setState({ message: err.message || "Failed to add job" });
+        this.setState({ message: err.message || "Failed to add job." });
       }
     } catch (error) {
-      console.error("Error adding job :", error);
-      this.setState({ message: "Failed to add job" });
+      console.error("Error adding job:", error);
+      this.setState({ message: "Failed to add job." });
     }
   };
 
   render() {
     const { title, description, required_skills, recruiter_id, message, role } = this.state;
+
     return (
       <>
         <Navbar />
@@ -81,9 +86,7 @@ class AddJob extends Component {
           <h1 className="add-job-title">Add New Job</h1>
           {message && <p className="message">{message}</p>}
           <form onSubmit={this.handleSubmit} className="form-container">
-            <label htmlFor="title" className="form-label">
-              Title
-            </label>
+            <label htmlFor="title" className="form-label">Title</label>
             <input
               type="text"
               name="title"
@@ -92,9 +95,7 @@ class AddJob extends Component {
               className="form-input"
             />
 
-            <label htmlFor="description" className="form-label">
-              Description
-            </label>
+            <label htmlFor="description" className="form-label">Description</label>
             <textarea
               name="description"
               value={description}
@@ -102,9 +103,7 @@ class AddJob extends Component {
               className="form-input"
             />
 
-            <label htmlFor="required_skills" className="form-label">
-              Required Skills
-            </label>
+            <label htmlFor="required_skills" className="form-label">Required Skills</label>
             <input
               type="text"
               name="required_skills"
@@ -113,15 +112,13 @@ class AddJob extends Component {
               className="form-input"
             />
 
-            {/* If the user is a Recruiter, hide the recruiter_id input (we auto-fill it).
-                For Admin, show the explicit recruiter id field. */}
             {role === "Recruiter" ? (
-              <div className="form-note">Recruiter ID will be set to your account (auto-filled)</div>
+              <div className="form-note">
+                Recruiter ID will be set to your account (auto-filled)
+              </div>
             ) : (
               <>
-                <label htmlFor="recruiter_id" className="form-label">
-                  Recruiter ID
-                </label>
+                <label htmlFor="recruiter_id" className="form-label">Recruiter ID</label>
                 <input
                   type="text"
                   name="recruiter_id"
@@ -132,9 +129,7 @@ class AddJob extends Component {
               </>
             )}
 
-            <button className="job-btn" type="submit">
-              Add Job
-            </button>
+            <button className="job-btn" type="submit">Add Job</button>
           </form>
         </div>
       </>

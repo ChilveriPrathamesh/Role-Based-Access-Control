@@ -67,10 +67,22 @@ const getUsers = async() => {
     }
 }
 
+// Get users by role 
+const getUsersByRole = async (role) => {
+  try {
+    const [rows] = await pool.query('SELECT id, email FROM users WHERE role = ?', [role]);
+    return rows;
+  } catch (error) {
+    throw new Error('Error fetching users by role: ' + error.message);
+  }
+};
+
+
 module.exports = {
     findByEmail , 
     findById ,
     createUser , 
     userExists , 
-    getUsers
+    getUsers , 
+    getUsersByRole
 }

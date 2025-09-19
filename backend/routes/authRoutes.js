@@ -76,5 +76,44 @@ router.post('/login', authController.login);
  */
 router.post('/register', authController.register);
 
+/**
+ * @swagger
+ * /api/users:
+ *   get:
+ *     summary: Get users by role
+ *     tags: [Users]
+ *     parameters:
+ *       - in: query
+ *         name: role
+ *         required: true
+ *         schema:
+ *           type: string
+ *           enum: [Admin, Recruiter, HR, Hiring Manager]
+ *         description: Role of the users to fetch
+ *     responses:
+ *       200:
+ *         description: List of users with specified role
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: integer
+ *                     example: 1
+ *                   name:
+ *                     type: string
+ *                     example: John Doe
+ *       400:
+ *         description: Role is required
+ *       500:
+ *         description: Server error
+ */
+router.get('/users', authController.getUsersByRole);
+
+
+
 
 module.exports = router

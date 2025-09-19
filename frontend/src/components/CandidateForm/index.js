@@ -29,7 +29,14 @@ class CandidateForm extends Component {
       const res = await fetch(`${API_URL}/${id}`);
       if (!res.ok) throw new Error("Failed to fetch candidate");
       const data = await res.json();
-      this.setState({ ...data, error: "" });
+      this.setState({
+        name: data.name || "",
+        email: data.email || "",
+        phone_number: data.phone_number || "",
+        current_status: data.current_status || "",
+        resume_link: data.resume_link || "",
+        error: "",
+      });
     } catch (err) {
       this.setState({ error: err.message || "Error loading candidate" });
     }
@@ -41,7 +48,11 @@ class CandidateForm extends Component {
 
   handleSubmit = async (e) => {
     e.preventDefault();
-    const { id, ...candidate } = this.state;
+    const { id, name, email, phone_number, current_status, resume_link } = this.state;
+
+    // Only send required fields to backend
+    const candidate = { name, email, phone_number, current_status, resume_link };
+
     const method = id ? "PUT" : "POST";
     const url = id ? `${API_URL}/${id}` : API_URL;
 
@@ -52,12 +63,13 @@ class CandidateForm extends Component {
         body: JSON.stringify(candidate),
       });
 
-      if (!res.ok) throw new Error("Failed to save candidate");
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData?.error || "Failed to save candidate");
+      }
 
       this.setState({
-        success: id
-          ? "Candidate updated successfully."
-          : "Candidate added successfully.",
+        success: id ? "Candidate updated successfully." : "Candidate added successfully.",
         error: "",
       });
 
@@ -73,33 +85,19 @@ class CandidateForm extends Component {
   };
 
   render() {
-    const {
-      id,
-      name,
-      email,
-      phone_number,
-      current_status,
-      resume_link,
-      error,
-      success,
-    } = this.state;
+    const { id, name, email, phone_number, current_status, resume_link, error, success } = this.state;
 
     return (
       <>
         <Navbar />
         <div className="candidate-form-container">
-          <h1 className="candidate-form-title">
-            {id ? "Edit Candidate" : "Add Candidate"}
-          </h1>
+          <h1 className="candidate-form-title">{id ? "Edit Candidate" : "Add Candidate"}</h1>
 
-          {/* Show Messages */}
           {success && <p className="success-message">{success}</p>}
           {error && <p className="error-message">{error}</p>}
 
           <form className="candidate-form" onSubmit={this.handleSubmit}>
-            <label htmlFor="name" className="candidate-form-label">
-              Full Name
-            </label>
+            <label htmlFor="name" className="candidate-form-label">Full Name</label>
             <input
               id="name"
               type="text"
@@ -111,9 +109,7 @@ class CandidateForm extends Component {
               required
             />
 
-            <label htmlFor="email" className="candidate-form-label">
-              Email
-            </label>
+            <label htmlFor="email" className="candidate-form-label">Email</label>
             <input
               id="email"
               type="email"
@@ -125,9 +121,7 @@ class CandidateForm extends Component {
               required
             />
 
-            <label htmlFor="phone_number" className="candidate-form-label">
-              Phone Number
-            </label>
+            <label htmlFor="phone_number" className="candidate-form-label">Phone Number</label>
             <input
               id="phone_number"
               type="text"
@@ -139,9 +133,7 @@ class CandidateForm extends Component {
               required
             />
 
-            <label htmlFor="current_status" className="candidate-form-label">
-              Current Status
-            </label>
+            <label htmlFor="current_status" className="candidate-form-label">Current Status</label>
             <input
               id="current_status"
               name="current_status"
@@ -152,9 +144,7 @@ class CandidateForm extends Component {
               required
             />
 
-            <label htmlFor="resume_link" className="candidate-form-label">
-              Resume URL
-            </label>
+            <label htmlFor="resume_link" className="candidate-form-label">Resume URL</label>
             <input
               id="resume_link"
               type="url"

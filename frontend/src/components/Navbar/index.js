@@ -28,6 +28,11 @@ class Navbar extends Component{
                     {role && (role === 'Admin' || role==='Recruiter') &&(
                         <Link to = "/add-candidate">Add Candidate</Link>
                     )}
+
+                    {/* Assign Candidate visible only to Admin */} 
+                    {role && role === 'Admin' && (
+                        <Link to='/assign-candidate'>Assign Candidate</Link>
+                    )}
                     
                     
                     <Link to ="/job-list" >Job List</Link>

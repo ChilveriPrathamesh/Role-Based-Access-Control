@@ -102,9 +102,25 @@ const getProfile = async(req, res) => {
     }
 }
 
+// GET /api/users?role=HR
+const getUsersByRole = async (req, res) => {
+  try {
+    const { role } = req.query;
+    if (!role) return res.status(400).json({ message: "Role is required" });
+
+    const users = await User.getUsersByRole(role);
+    res.status(200).json(users);
+  } catch (error) {
+    console.error("Error fetching users:", error);
+    res.status(500).json({ error: error.message });
+  }
+};
+
+
 module.exports = {
     register,
     login ,
     getAllUsers ,
-    getProfile
+    getProfile,
+    getUsersByRole
 }
