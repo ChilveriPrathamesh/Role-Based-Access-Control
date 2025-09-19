@@ -10,6 +10,20 @@ const getAllCandidates = async () => {
         throw new Error('Error fetching candidates from database: ' + error.message)
     }
 };
+// Get candidate by id :
+const getCandidateById = async (id) => {
+    try {
+        const [rows] = await pool.query(`
+                SELECT * FROM candidates WHERE id = ?
+            `,[id])
+        if(rows.length === 0) {
+            throw new Error(`No candidate found with id ${id}`)
+        }
+        return rows[0];
+    } catch(error) {
+        throw new Error('Error fetching candidate:' + error.message)
+    }
+}
 
 //POST API to add a new candidate to the Database
 const addCandidate = async (candidate) => {
@@ -77,6 +91,7 @@ const candidateExists = async(candidateId) => {
 
 module.exports =  {
     getAllCandidates ,
+    getCandidateById ,
     addCandidate ,
     updateCandidate ,
     deleteCandidate ,

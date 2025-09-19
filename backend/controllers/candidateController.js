@@ -10,6 +10,17 @@ const getCandidates = async (req , res) => {
     }
 }
 
+//Get candidate by id 
+const getCandidate = async (req,res) => {
+    try {
+        const id = req.params.id ;
+        const candidate = await Candidate.getCandidateById(id);
+        res.status(200).json(candidate)
+    } catch(error) {
+
+    }
+}
+
 //CREATE a new candidate 
 const createCandidate = async (req , res) => {
     try {
@@ -63,6 +74,7 @@ const checkCandidateExists = async(req,res) => {
 
 module.exports = {
     getCandidates ,
+    getCandidate,
     createCandidate , 
     editCandidate , 
     removeCandidate ,

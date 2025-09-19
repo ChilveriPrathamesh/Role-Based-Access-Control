@@ -50,7 +50,7 @@ function App() {
           <Route
             path="/candidatelist"
             element={
-              <ProtectedRoute allowedRoles={["Admin"]}>
+              <ProtectedRoute allowedRoles={["Admin" , "Recruiter"]}>
                 <CandidateList />
               </ProtectedRoute>
             }
@@ -58,7 +58,7 @@ function App() {
           <Route
             path="/add-candidate"
             element={
-              <ProtectedRoute allowedRoles={["Admin","Recruiter"]}>
+              <ProtectedRoute allowedRoles={["Admin", "Recruiter"]}>
                 <CandidateForm />
               </ProtectedRoute>
             }
@@ -66,11 +66,12 @@ function App() {
           <Route
             path="/edit/:id"
             element={
-              <ProtectedRoute allowedRoles={["Admin"]}>
+              <ProtectedRoute allowedRoles={["Admin", "Recruiter"]}>
                 <CandidateForm />
               </ProtectedRoute>
             }
           />
+
           <Route
             path="/job-list"
             element={

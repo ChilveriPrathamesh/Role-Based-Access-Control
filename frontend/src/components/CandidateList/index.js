@@ -1,6 +1,7 @@
 import React , { Component } from "react";
 import { Link } from "react-router-dom";
 import { API_URL } from "../../config";
+import Cookies from 'js-cookie'
 
 import './index.css';
 import Navbar from "../Navbar";
@@ -43,13 +44,14 @@ class CandidateList extends Component{
 
     render(){
         const {candidates} = this.state
+        const userRole = Cookies.get("role")
         return(
             <>
             <Navbar/>
             <div className="candidate-list-container">
                 <div className="candidate-list-header">
                     <h1 className="candidate-title">Candidate List</h1>
-                    <Link to = "/add">
+                    <Link to = "/add-candidate">
                         <button className="candidate-list-add-btn">Edit Candidate</button>
                     </Link>
                 </div>
@@ -85,12 +87,17 @@ class CandidateList extends Component{
                                     </a>
                                 </td>
                                 <td>
-                                    <Link to = {`/edit/${candidate.id}`}>
+                                    <Link to={`/edit/${candidate.id}`}>
                                         <button className="candidate-list-edit-btn">Edit</button>
                                     </Link>
-                                    <button className="candidate-list-delete-btn" onClick={()=>this.handleDelete(candidate.id)}>
-                                        Delete
-                                    </button>
+
+                                    {
+                                        userRole === "Admin" && (
+                                            <button className="candidate-list-delete-btn" onClick={()=>this.handleDelete(candidate.id)}>
+                                                Delete
+                                            </button>
+                                        )
+                                    }
                                 </td>
                             </tr>
                         ))}

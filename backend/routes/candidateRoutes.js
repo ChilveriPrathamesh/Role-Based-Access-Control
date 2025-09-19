@@ -1,6 +1,6 @@
 const express = require('express');
 
-const {getCandidates , createCandidate , editCandidate , removeCandidate} = require('../controllers/candidateController');
+const {getCandidates , createCandidate , editCandidate , removeCandidate , getCandidate} = require('../controllers/candidateController');
 
 const router = express.Router() ;
 
@@ -23,6 +23,27 @@ const router = express.Router() ;
  * 
  */
 router.get('/' , getCandidates) ;
+
+/**
+ * @swagger
+ * /api/candidates/{id}:
+ *  get:
+ *    summary: Get a candidate by ID
+ *    tags: [Candidates]
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        required: true
+ *        schema:
+ *          type: integer
+ *    responses:
+ *      200:
+ *        description: Candidate fetched successfully
+ *      404:
+ *        description: Candidate not found
+ */
+router.get('/:id', getCandidate); 
+
 
 /**
  * @swagger 
